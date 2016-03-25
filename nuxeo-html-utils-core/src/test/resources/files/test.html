@@ -1,0 +1,28 @@
+<html>
+
+<head>
+	<script src="does/not/exist/script.js"></script>
+	<link rel="stylesheet" type="text/css" href="does/not/exist/style.css">
+</head>
+
+<body>
+<h1>Welcome to the HTMLParserTest</h1>
+<p><h2>Ready to Test?</h2></p>
+
+<!-- These pone should not be listed
+<p></p>
+<a href="sub1/sub2/NOT-IN-TEST.html">(NOT-IN-TEST</a>
+<p></p>
+<img src="sub1/sub2/NOT-IN-TEST.html">
+<p></p>
+-->
+
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud <a href="http://nuxeo.com">Here, a link to nuxeo.com</a></p>
+
+<p>Another link <a href="sub1/sub2/sub.html">(This does not exist in the test files)</a></p>
+
+<img src="http://does.not.exist.com/just/for/test.jpg" alt="TheImg">
+
+<h2>Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo.</h2>
+</body>
+</html>

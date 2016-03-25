@@ -1,8 +1,12 @@
-Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .
 Manifest-Version: 1.0
-Bundle-Vendor: org.nuxeo.html.utils
+Bundle-SymbolicName: org.nuxeo.html.utils.nuxeo-html-utils-core;single
+ ton=true
 Bundle-Version: 1.0.0
 Bundle-Name: nuxeo-html-utils-core
+Bundle-ClassPath: .
+Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: org.nuxeo.html.utils.nuxeo-html-utils-core;singleton=true
+Bundle-Vendor: org.nuxeo.html.utils
+Nuxeo-Component: OSGI-INF/extensions/org.nuxeo.html.utils.HTMLGetLinks
+ Op.xml
+
