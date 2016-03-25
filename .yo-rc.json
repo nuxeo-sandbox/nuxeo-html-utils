@@ -1,0 +1,11 @@
+{
+  "generator-nuxeo": {
+    "promptValues": {
+      "parent_package": "org.nuxeo.html.utils",
+      "parent_artifact": "nuxeo-html-utils-parent",
+      "nuxeo_version": "8.1",
+      "package": "org.nuxeo.html.utils"
+    },
+    "multi": true
+  }
+}
