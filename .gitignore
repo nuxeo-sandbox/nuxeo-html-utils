@@ -24,7 +24,5 @@ target
 *cpJar*
 dependency-tree.log
 nashorn_code_cache
+.yo-rc.json
 
-# Specific to this plugin
-test-private.properties
-temp-commandlines-test.xml
