@@ -7,6 +7,5 @@ Bundle-ClassPath: .
 Bundle-ActivationPolicy: lazy
 Bundle-ManifestVersion: 2
 Bundle-Vendor: org.nuxeo.html.utils
-Nuxeo-Component: OSGI-INF/extensions/org.nuxeo.html.utils.HTMLGetLinks
- Op.xml
+Nuxeo-Component: OSGI-INF/extensions/nuxeo-html-utils-operations.xml
 

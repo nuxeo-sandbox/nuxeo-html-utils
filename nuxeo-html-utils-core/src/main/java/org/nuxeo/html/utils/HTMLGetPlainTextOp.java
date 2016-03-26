@@ -30,40 +30,41 @@ import org.nuxeo.ecm.automation.core.Constants;
 import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
+import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.core.api.Blob;
 
 /**
- * Parses the html for every tag with a "src" or a "href" attribute, and returns a JSON string of an array of objects
- * with tag, attribute, text and link fields.
- * <p>
- * If <code>getAll</code> is <code>false</code>, then <code>type</code> is required.
+ * Returns the plain text of the html
  * 
  * @since 8.1
  */
-@Operation(id = HTMLGetLinksOp.ID, category = Constants.CAT_SERVICES, label = "HTML: GetLinksOp", description = "Returns a JSON string of an array of objects with tag, attribute, text and link fields (returns all and src)")
-public class HTMLGetLinksOp {
+@Operation(id = HTMLGetPlainTextOp.ID, category = Constants.CAT_CONVERSION, label = "HTML: Get Plain Text", description = "Returns the plain text of the HTML")
+public class HTMLGetPlainTextOp {
 
-    public static final String ID = "HTML.GetLinks";
+    public static final String ID = "HTML.GetPlainText";
+
+    @Param(name = "includeHyperlinkURLs", required = false, values = { "false" })
+    boolean includeHyperlinkURLs = false;
+
+    @Param(name = "includeAlternateText", required = false, values = { "false" })
+    boolean includeAlternateText = false;
+
+    @Param(name = "convertNonBreakingSpaces", required = false, values = { "false" })
+    boolean convertNonBreakingSpaces = false;
+
+    @Param(name = "lineSeparator", required = false)
+    String lineSeparator = null;
 
     @OperationMethod
     public String run(Blob inBlob) throws IOException, JSONException {
 
         HTMLParser hp = new HTMLParser(inBlob);
-        ArrayList<LinkInfo> links = hp.getLinks();
-        
-        JSONArray array = new JSONArray();
-        for (LinkInfo li : links) {
-            JSONObject object = new JSONObject();
-            object.put("tag", li.getTag());
-            object.put("attribute", li.getAttribute());
-            object.put("text", li.getText());
-            object.put("link", li.getLink());
 
-            array.put(object);
-        }
-        
-        return array.toString();
-        
+        String plainText = hp.getPlainText(lineSeparator, includeHyperlinkURLs, includeAlternateText,
+                convertNonBreakingSpaces);
+
+        return plainText;
+
     }
 
 }

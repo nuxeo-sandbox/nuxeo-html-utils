@@ -126,7 +126,7 @@ public class HTMLPaserTest {
         OperationContext ctx = new OperationContext(coreSession);
 
         ctx.setInput(HTML_FILEBLOB);
-        chain = new OperationChain("testChain");
+        chain = new OperationChain("testGetLinksOp");
         chain.add(HTMLGetLinksOp.ID).set("getAll", true);
         String result = (String) automationService.run(ctx, chain);
 
@@ -156,6 +156,26 @@ public class HTMLPaserTest {
         assertTrue(src.contains("http://does.not.exist.com/just/for/test.jpg"));
     }
     
+    protected void testPlainText(String plainText, boolean hasHyperLinks) throws Exception {
+        
+        // Contains the text
+        assertTrue(plainText.indexOf("Welcome to the HTMLParserTest") > -1);
+        assertTrue(plainText.indexOf("This does not exist in the test files") > -1);
+        
+        // Does not contains the tags, the comments, ...
+        assertTrue(plainText.indexOf("<script") < 0);
+        assertTrue(plainText.indexOf("These one should not be listed") < 0);
+        
+        // Links
+        if(hasHyperLinks) {
+            assertTrue(plainText.indexOf("http://nuxeo.com") > -1);
+        } else {
+            assertTrue(plainText.indexOf("http://nuxeo.com") < 0);
+        }
+        
+        
+    }
+    
     @Test
     public void testGetPlainText() throws Exception {
         
@@ -163,18 +183,33 @@ public class HTMLPaserTest {
         
         // Default parameters
         String plainText = hp.getPlainText();
-        // Contains the text
-        assertTrue(plainText.indexOf("Welcome to the HTMLParserTest") > -1);
-        assertTrue(plainText.indexOf("This does not exist in the test files") > -1);
-        
-        // Does not contains the tags, the comments, the links, ...
-        assertTrue(plainText.indexOf("<script") < 0);
-        assertTrue(plainText.indexOf("These one should not be listed") < 0);
-        assertTrue(plainText.indexOf("http://nuxeo.com") < 0);
+        testPlainText(plainText, false);
         
         // Also get the hyperlinks
         plainText = hp.getPlainText(null, true, false, false);
-        assertTrue(plainText.indexOf("http://nuxeo.com") > -1);
+        testPlainText(plainText, true);
         
+    }
+
+    @Test
+    public void testGetPlainTextOperation() throws Exception {
+
+        OperationChain chain;
+        OperationContext ctx = new OperationContext(coreSession);
+
+        ctx.setInput(HTML_FILEBLOB);
+        chain = new OperationChain("testGetPlainTextOp-1");
+        chain.add(HTMLGetPlainTextOp.ID);
+        String result = (String) automationService.run(ctx, chain);
+        assertNotNull(result);
+        testPlainText(result, false);
+        
+        // With hyperLinks
+        ctx.setInput(HTML_FILEBLOB);
+        chain = new OperationChain("testGetPlainTextOp-2");
+        chain.add(HTMLGetPlainTextOp.ID).set("includeHyperlinkURLs", true);
+        result = (String) automationService.run(ctx, chain);
+        assertNotNull(result);
+        testPlainText(result, true);
     }
 }
