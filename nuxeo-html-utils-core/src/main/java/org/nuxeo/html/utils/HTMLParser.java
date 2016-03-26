@@ -22,30 +22,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.nuxeo.ecm.core.api.Blob;
 
 import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.HTMLElementName;
+import net.htmlparser.jericho.Renderer;
 import net.htmlparser.jericho.Source;
 
 /**
- * 
  * @since 8.1
  */
 public class HTMLParser {
-    
-    public static final String [] HANDLED_LINKS_ATTRIBUTES = {"href", "src"};
-    
+
+    public static final String[] HANDLED_LINKS_ATTRIBUTES = { "href", "src" };
+
     Source source;
-    
+
     protected ArrayList<LinkInfo> links;
-    
+
+    protected ArrayList<String> imgSrc;
+
     public HTMLParser(Blob inBlob) throws IOException {
         source = new Source(inBlob.getStream());
     }
-    
+
     public ArrayList<LinkInfo> getLinks() {
-        
-        if(links == null) {
+
+        if (links == null) {
 
             String text, link;
             List<Element> linkElements;
@@ -59,9 +63,52 @@ public class HTMLParser {
                 }
             }
         }
-        
+
         return links;
-        
+
     }
 
+    public List<String> getImgSrc() {
+
+        if (imgSrc == null) {
+            imgSrc = new ArrayList<String>();
+            String src;
+            List<Element> linkElements = source.getAllElements(HTMLElementName.IMG);
+            for (Element linkElement : linkElements) {
+                src = linkElement.getAttributeValue("src");
+                if (StringUtils.isNotBlank(src)) {
+                    imgSrc.add(src);
+                }
+            }
+        }
+
+        return imgSrc;
+    }
+
+    public String getPlainText() {
+        return getPlainText("\n", false, false, false);
+    }
+
+    public String getPlainText(String lineSeparator, boolean includeHyperlinkURLs, boolean includeAlternateText,
+            boolean convertNonBreakingSpaces) {
+
+        if (StringUtils.isBlank(lineSeparator)) {
+            lineSeparator = "\n";
+        }
+
+        source.fullSequentialParse();
+        Renderer renderer = source.getRenderer();
+
+        renderer.setIncludeHyperlinkURLs(includeHyperlinkURLs);
+        renderer.setIncludeAlternateText(includeAlternateText);
+        renderer.setConvertNonBreakingSpaces(convertNonBreakingSpaces);
+
+        renderer.setDecorateFontStyles(false);
+        renderer.setMaxLineLength(Integer.MAX_VALUE);
+
+        renderer.setNewLine(lineSeparator);
+
+        return renderer.toString();
+
+    }
 }
