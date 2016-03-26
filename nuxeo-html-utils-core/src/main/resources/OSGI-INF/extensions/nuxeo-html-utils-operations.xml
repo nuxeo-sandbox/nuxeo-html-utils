@@ -2,8 +2,8 @@
 
   <extension target="org.nuxeo.ecm.core.operation.OperationServiceComponent"
     point="operations" >
-      <operation class="org.nuxeo.html.utils.HTMLGetLinksOp" />
-      <operation class="org.nuxeo.html.utils.HTMLGetPlainTextOp" />
+      <operation class="org.nuxeo.html.utils.operations.HTMLGetLinksOp" />
+      <operation class="org.nuxeo.html.utils.operations.HTMLGetPlainTextOp" />
    </extension>
     
 </component>
