@@ -17,7 +17,7 @@
  *     Thibaud Arguillere
  */
 
-package org.nuxeo.html.utils;
+package org.nuxeo.html.utils.operations;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.html.utils.HTMLParser;
 
 /**
  * Returns the plain text of the html
@@ -58,11 +59,13 @@ public class HTMLGetPlainTextOp {
     @OperationMethod
     public String run(Blob inBlob) throws IOException, JSONException {
 
-        HTMLParser hp = new HTMLParser(inBlob);
+        String plainText = "";
+        if (inBlob != null) {
+            HTMLParser hp = new HTMLParser(inBlob);
 
-        String plainText = hp.getPlainText(lineSeparator, includeHyperlinkURLs, includeAlternateText,
-                convertNonBreakingSpaces);
-
+            plainText = hp.getPlainText(lineSeparator, includeHyperlinkURLs, includeAlternateText,
+                    convertNonBreakingSpaces);
+        }
         return plainText;
 
     }

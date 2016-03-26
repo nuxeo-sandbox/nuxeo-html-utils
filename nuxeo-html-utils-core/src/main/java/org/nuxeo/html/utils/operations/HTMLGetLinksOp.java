@@ -17,7 +17,7 @@
  *     Thibaud Arguillere
  */
 
-package org.nuxeo.html.utils;
+package org.nuxeo.html.utils.operations;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,16 +31,16 @@ import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.html.utils.HTMLParser;
+import org.nuxeo.html.utils.LinkInfo;
 
 /**
  * Parses the html for every tag with a "src" or a "href" attribute, and returns a JSON string of an array of objects
  * with tag, attribute, text and link fields.
- * <p>
- * If <code>getAll</code> is <code>false</code>, then <code>type</code> is required.
  * 
  * @since 8.1
  */
-@Operation(id = HTMLGetLinksOp.ID, category = Constants.CAT_SERVICES, label = "HTML: GetLinksOp", description = "Returns a JSON string of an array of objects with tag, attribute, text and link fields (returns all and src)")
+@Operation(id = HTMLGetLinksOp.ID, category = Constants.CAT_SERVICES, label = "HTML: Get Links", description = "Returns a JSON string of an array of objects with tag, attribute, text and link fields (returns all and src)")
 public class HTMLGetLinksOp {
 
     public static final String ID = "HTML.GetLinks";
@@ -48,22 +48,25 @@ public class HTMLGetLinksOp {
     @OperationMethod
     public String run(Blob inBlob) throws IOException, JSONException {
 
-        HTMLParser hp = new HTMLParser(inBlob);
-        ArrayList<LinkInfo> links = hp.getLinks();
-        
         JSONArray array = new JSONArray();
-        for (LinkInfo li : links) {
-            JSONObject object = new JSONObject();
-            object.put("tag", li.getTag());
-            object.put("attribute", li.getAttribute());
-            object.put("text", li.getText());
-            object.put("link", li.getLink());
 
-            array.put(object);
+        if (inBlob != null) {
+            HTMLParser hp = new HTMLParser(inBlob);
+            ArrayList<LinkInfo> links = hp.getLinks();
+
+            for (LinkInfo li : links) {
+                JSONObject object = new JSONObject();
+                object.put("tag", li.getTag());
+                object.put("attribute", li.getAttribute());
+                object.put("text", li.getText());
+                object.put("link", li.getLink());
+
+                array.put(object);
+            }
         }
-        
+
         return array.toString();
-        
+
     }
 
 }
