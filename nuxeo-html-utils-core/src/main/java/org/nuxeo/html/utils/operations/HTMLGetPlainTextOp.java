@@ -20,26 +20,24 @@
 package org.nuxeo.html.utils.operations;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.core.Constants;
-import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.html.utils.HTMLParser;
 
 /**
- * Returns the plain text of the html
+ * Returns the plain text of the html.
+ * <p>
+ * If the input is a Document, optional xpath is the field holding the blob. Let empty if using a Note document.
  * 
  * @since 8.1
  */
-@Operation(id = HTMLGetPlainTextOp.ID, category = Constants.CAT_CONVERSION, label = "HTML: Get Plain Text", description = "Returns the plain text of the HTML")
+@Operation(id = HTMLGetPlainTextOp.ID, category = Constants.CAT_CONVERSION, label = "HTML: Get Plain Text", description = "Returns the plain text of the HTML. If input is a Document, optional xpath is the field holding the blob. The operaiton handles Note documents (whatever value in xpath).")
 public class HTMLGetPlainTextOp {
 
     public static final String ID = "HTML.GetPlainText";
@@ -56,12 +54,43 @@ public class HTMLGetPlainTextOp {
     @Param(name = "lineSeparator", required = false)
     String lineSeparator = null;
 
+    @Param(name = "xpath", required = false)
+    String xpath;
+
     @OperationMethod
     public String run(Blob inBlob) throws IOException, JSONException {
 
         String plainText = "";
         if (inBlob != null) {
             HTMLParser hp = new HTMLParser(inBlob);
+
+            plainText = hp.getPlainText(lineSeparator, includeHyperlinkURLs, includeAlternateText,
+                    convertNonBreakingSpaces);
+        }
+        return plainText;
+
+    }
+
+    @OperationMethod
+    public String run(String inStr) throws IOException, JSONException {
+
+        String plainText = "";
+        if (inStr != null) {
+            HTMLParser hp = new HTMLParser(inStr);
+
+            plainText = hp.getPlainText(lineSeparator, includeHyperlinkURLs, includeAlternateText,
+                    convertNonBreakingSpaces);
+        }
+        return plainText;
+
+    }
+
+    @OperationMethod
+    public String run(DocumentModel inDoc) throws IOException, JSONException {
+
+        String plainText = "";
+        if (inDoc != null) {
+            HTMLParser hp = new HTMLParser(inDoc, xpath);
 
             plainText = hp.getPlainText(lineSeparator, includeHyperlinkURLs, includeAlternateText,
                     convertNonBreakingSpaces);

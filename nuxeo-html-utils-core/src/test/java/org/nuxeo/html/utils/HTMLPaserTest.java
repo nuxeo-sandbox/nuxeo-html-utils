@@ -59,7 +59,7 @@ public class HTMLPaserTest {
     protected static final String HTML_TEST_FILE = "files/test.html";
 
     protected static FileBlob HTML_FILEBLOB;
-    
+
     protected static int counter = 0;
 
     @Inject
@@ -74,9 +74,9 @@ public class HTMLPaserTest {
         File f = FileUtils.getResourceFileFromContext(HTML_TEST_FILE);
         HTML_FILEBLOB = new FileBlob(f);
     }
-    
+
     protected DocumentModel createTestNote() throws IOException {
-        
+
         String html = HTML_FILEBLOB.getString();
 
         counter += 1;
@@ -86,19 +86,19 @@ public class HTMLPaserTest {
         note.setPropertyValue("note:mime_type", "text/html");
         note.setPropertyValue("note:note", html);
         note = session.createDocument(note);
-        
+
         return note;
     }
-    
+
     protected DocumentModel createTestFile() throws IOException {
-        
+
         counter += 1;
         String title = "file-" + counter;
         DocumentModel file = session.createDocumentModel("/", title, "File");
         file.setPropertyValue("dc:title", title);
         file.setPropertyValue("file:content", HTML_FILEBLOB);
         file = session.createDocument(file);
-        
+
         return file;
     }
 

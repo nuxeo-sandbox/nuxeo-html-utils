@@ -19,6 +19,8 @@
 package org.nuxeo.html.utils;
 
 /**
+ * A utility class containing misc. information about a link
+ * 
  * @since 8.1
  */
 public class LinkInfo {
@@ -80,7 +82,7 @@ public class LinkInfo {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

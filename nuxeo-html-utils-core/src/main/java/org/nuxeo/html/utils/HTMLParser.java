@@ -23,10 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.PropertyException;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolderAdapterService;
 import org.nuxeo.runtime.api.Framework;
@@ -37,6 +35,10 @@ import net.htmlparser.jericho.Renderer;
 import net.htmlparser.jericho.Source;
 
 /**
+ * Wrapper around Jericho HTML Parser.
+ * <p>
+ * This class extracts links and plain text from an html source, Blob, String or Document
+ * 
  * @since 8.1
  */
 public class HTMLParser {
@@ -61,6 +63,14 @@ public class HTMLParser {
         this(inDoc, null);
     }
 
+    /**
+     * In this constructor, if the code fails top ge a blob from the xpath (or if it is empty and file:content is null),
+     * the method tries checks if the Document is Note (has the "note" schema, more precisely)
+     * 
+     * @param inDoc
+     * @param inXPath
+     * @throws IOException
+     */
     public HTMLParser(DocumentModel inDoc, String inXPath) throws IOException {
 
         Blob blob = null;
@@ -80,6 +90,14 @@ public class HTMLParser {
         source = new Source(blob.getStream());
     }
 
+    /**
+     * Returns every links of type <code>HANDLED_LINKS_ATTRIBUTES</code>
+     * <p>
+     * Excludes comments, of course.
+     * 
+     * @return
+     * @since 8.1
+     */
     public ArrayList<LinkInfo> getLinks() {
 
         if (links == null) {
@@ -101,6 +119,16 @@ public class HTMLParser {
 
     }
 
+    /**
+     * Returns every links of type <code>src</code> inside an <code>img</code> tag.
+     * <p>
+     * Calling @{getLinks} and walking thru the resulting list would do the same.
+     * <p>
+     * Excludes comments, of course.
+     * 
+     * @return
+     * @since 8.1
+     */
     public List<String> getImgSrc() {
 
         if (imgSrc == null) {
@@ -118,10 +146,34 @@ public class HTMLParser {
         return imgSrc;
     }
 
+    /**
+     * Returns the plain text of the html using:
+     * <ul>
+     * <li>\n as line separator</li>
+     * <li><code>includeHyperlinkURLs</code>: <code>false</code></li>
+     * <li><code>includeAlternateText</code>: <code>false</code></li>
+     * <li><code>convertNonBreakingSpaces</code>: <code>false</code></li>
+     * <li></li>
+     * <li></li>
+     * </ul>
+     * 
+     * @return the plain text
+     * @since 8.1
+     */
     public String getPlainText() {
         return getPlainText("\n", false, false, false);
     }
 
+    /**
+     * Returns the plain text of the HTML. More or less text depending on the parameters.
+     * 
+     * @param lineSeparator
+     * @param includeHyperlinkURLs
+     * @param includeAlternateText
+     * @param convertNonBreakingSpaces
+     * @return the plain te
+     * @since 8.1
+     */
     public String getPlainText(String lineSeparator, boolean includeHyperlinkURLs, boolean includeAlternateText,
             boolean convertNonBreakingSpaces) {
 

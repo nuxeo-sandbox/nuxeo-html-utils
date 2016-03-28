@@ -25,15 +25,12 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.nuxeo.ecm.automation.OperationContext;
 import org.nuxeo.ecm.automation.core.Constants;
-import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
 import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.core.api.Blob;
 import org.nuxeo.ecm.core.api.DocumentModel;
-import org.nuxeo.ecm.core.api.blobholder.BlobHolderAdapterService;
 import org.nuxeo.html.utils.HTMLParser;
 import org.nuxeo.html.utils.LinkInfo;
 
@@ -49,12 +46,12 @@ import org.nuxeo.html.utils.LinkInfo;
 public class HTMLGetLinksOp {
 
     public static final String ID = "HTML.GetLinks";
-    
+
     @Param(name = "xpath", required = false)
     String xpath;
-    
+
     protected JSONArray buildJsonString(ArrayList<LinkInfo> links) throws JSONException {
-        
+
         JSONArray array = new JSONArray();
         for (LinkInfo li : links) {
             JSONObject object = new JSONObject();
@@ -66,7 +63,7 @@ public class HTMLGetLinksOp {
             array.put(object);
         }
         return array;
-        
+
     }
 
     @OperationMethod
