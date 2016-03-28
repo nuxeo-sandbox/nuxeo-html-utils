@@ -47,6 +47,10 @@ public class HTMLParser {
         source = new Source(inBlob.getStream());
     }
 
+    public HTMLParser(String inHTML) throws IOException {
+        source = new Source(inHTML);
+    }
+
     public ArrayList<LinkInfo> getLinks() {
 
         if (links == null) {

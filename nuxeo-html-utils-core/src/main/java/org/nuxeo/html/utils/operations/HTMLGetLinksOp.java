@@ -69,4 +69,28 @@ public class HTMLGetLinksOp {
 
     }
 
+    @OperationMethod
+    public String run(String inHTML) throws IOException, JSONException {
+
+        JSONArray array = new JSONArray();
+
+        if (inHTML != null) {
+            HTMLParser hp = new HTMLParser(inHTML);
+            ArrayList<LinkInfo> links = hp.getLinks();
+
+            for (LinkInfo li : links) {
+                JSONObject object = new JSONObject();
+                object.put("tag", li.getTag());
+                object.put("attribute", li.getAttribute());
+                object.put("text", li.getText());
+                object.put("link", li.getLink());
+
+                array.put(object);
+            }
+        }
+
+        return array.toString();
+
+    }
+
 }
