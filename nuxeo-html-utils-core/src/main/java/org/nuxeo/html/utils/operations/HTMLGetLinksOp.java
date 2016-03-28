@@ -30,20 +30,44 @@ import org.nuxeo.ecm.automation.core.Constants;
 import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.automation.core.annotations.Operation;
 import org.nuxeo.ecm.automation.core.annotations.OperationMethod;
+import org.nuxeo.ecm.automation.core.annotations.Param;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.blobholder.BlobHolderAdapterService;
 import org.nuxeo.html.utils.HTMLParser;
 import org.nuxeo.html.utils.LinkInfo;
 
 /**
  * Parses the html for every tag with a "src" or a "href" attribute, and returns a JSON string of an array of objects
  * with tag, attribute, text and link fields.
+ * <p>
+ * If the input is a Document, optional xpath is the field holding the blob. Let empty if using a Note document.
  * 
  * @since 8.1
  */
-@Operation(id = HTMLGetLinksOp.ID, category = Constants.CAT_SERVICES, label = "HTML: Get Links", description = "Returns a JSON string of an array of objects with tag, attribute, text and link fields (returns all and src)")
+@Operation(id = HTMLGetLinksOp.ID, category = Constants.CAT_SERVICES, label = "HTML: Get Links", description = "Returns a JSON string of an array of objects with tag, attribute, text and link fields (returns href and src). If input is a Document, optional xpath is the field holding the blob. The operaiton handles Note documents (whatever value in xpath).")
 public class HTMLGetLinksOp {
 
     public static final String ID = "HTML.GetLinks";
+    
+    @Param(name = "xpath", required = false)
+    String xpath;
+    
+    protected JSONArray buildJsonString(ArrayList<LinkInfo> links) throws JSONException {
+        
+        JSONArray array = new JSONArray();
+        for (LinkInfo li : links) {
+            JSONObject object = new JSONObject();
+            object.put("tag", li.getTag());
+            object.put("attribute", li.getAttribute());
+            object.put("text", li.getText());
+            object.put("link", li.getLink());
+
+            array.put(object);
+        }
+        return array;
+        
+    }
 
     @OperationMethod
     public String run(Blob inBlob) throws IOException, JSONException {
@@ -54,15 +78,23 @@ public class HTMLGetLinksOp {
             HTMLParser hp = new HTMLParser(inBlob);
             ArrayList<LinkInfo> links = hp.getLinks();
 
-            for (LinkInfo li : links) {
-                JSONObject object = new JSONObject();
-                object.put("tag", li.getTag());
-                object.put("attribute", li.getAttribute());
-                object.put("text", li.getText());
-                object.put("link", li.getLink());
+            array = buildJsonString(links);
+        }
 
-                array.put(object);
-            }
+        return array.toString();
+
+    }
+
+    @OperationMethod
+    public String run(DocumentModel inDoc) throws IOException, JSONException {
+
+        JSONArray array = new JSONArray();
+
+        if (inDoc != null) {
+            HTMLParser hp = new HTMLParser(inDoc, xpath);
+            ArrayList<LinkInfo> links = hp.getLinks();
+
+            array = buildJsonString(links);
         }
 
         return array.toString();
@@ -78,15 +110,7 @@ public class HTMLGetLinksOp {
             HTMLParser hp = new HTMLParser(inHTML);
             ArrayList<LinkInfo> links = hp.getLinks();
 
-            for (LinkInfo li : links) {
-                JSONObject object = new JSONObject();
-                object.put("tag", li.getTag());
-                object.put("attribute", li.getAttribute());
-                object.put("text", li.getText());
-                object.put("link", li.getLink());
-
-                array.put(object);
-            }
+            array = buildJsonString(links);
         }
 
         return array.toString();

@@ -23,7 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.nuxeo.ecm.automation.core.annotations.Context;
 import org.nuxeo.ecm.core.api.Blob;
+import org.nuxeo.ecm.core.api.DocumentModel;
+import org.nuxeo.ecm.core.api.PropertyException;
+import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
+import org.nuxeo.ecm.core.api.blobholder.BlobHolderAdapterService;
+import org.nuxeo.runtime.api.Framework;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
@@ -49,6 +55,29 @@ public class HTMLParser {
 
     public HTMLParser(String inHTML) throws IOException {
         source = new Source(inHTML);
+    }
+
+    public HTMLParser(DocumentModel inDoc) throws IOException {
+        this(inDoc, null);
+    }
+
+    public HTMLParser(DocumentModel inDoc, String inXPath) throws IOException {
+
+        Blob blob = null;
+
+        if (StringUtils.isBlank(inXPath)) {
+            if (inDoc.hasSchema("note")) {
+                BlobHolderAdapterService bhas = Framework.getLocalService(BlobHolderAdapterService.class);
+                BlobHolder bh = bhas.getBlobHolderAdapter(inDoc);
+                blob = bh.getBlob();
+            } else {
+                blob = (Blob) inDoc.getPropertyValue("file:content");
+            }
+        } else {
+            blob = (Blob) inDoc.getPropertyValue(inXPath);
+        }
+
+        source = new Source(blob.getStream());
     }
 
     public ArrayList<LinkInfo> getLinks() {
