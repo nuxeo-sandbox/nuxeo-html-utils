@@ -17,7 +17,7 @@ function run(input, params) {
   var blob, resultStr, resultJson;
   
   blob = doc["file:content"];
-  resultStr = HTML.GetLinks(null, {});
+  resultStr = HTML.GetLinks(blog, {});
   // We have the JSON string, convert it to full JSON
   resultJson = JSON.parse(resultStr);
   // Now, we can loop and get the values of each field:
