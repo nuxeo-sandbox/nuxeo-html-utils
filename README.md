@@ -7,8 +7,10 @@ Internally, it uses the _Jericho HTML Parser_ library (no need to install anythi
 ## Operations
 
 * **`HTML: Get Links`** (id `HTML.GetLinks`)
-  * Accepts a `Blob`, returns a `String`
+  * Accepts a `Blob`, `Document` or `string`, returns a `String`
   * Parses the html for every tag with a "src" or a "href" attribute, and returns a JSON string of an array of objects. Each object has a `tag`, `attribute`, `text` and `link` field.
+  * When the input is `Document`, you can use the `xpath` parameter to let the plug-in know where to get the blob from (default is `file:content`).
+  * Notice: If the input is `Document` and `xpath` is left empty or there is no blob, the plug-in will check if the document has the `note` schema. If yes, it uses its `note:note` field for parsing
   * Here is an example  using JavaScript automation:
 
 ```
@@ -38,6 +40,8 @@ function run(input, params) {
     * `includeAlternateText`: Boolean, optionnal. Default value is `false`.
     * `convertNonBreakingSpaces`: Boolean, optionnal. Default value is `false`.
     * `lineSeparator`: String, optionnal. Default value is `LF` (char #10, `"\n"`)
+    * `xpath`: Thge xpath to use when the input is `Document`. Default value is `file:contet`
+      * Notice: If the input is `Document` and `xpath` is left empty or there is no blob, the plug-in will check if the document has the `note` schema. If yes, it uses its `note:note` field for parsing
 
 
 ## Build
