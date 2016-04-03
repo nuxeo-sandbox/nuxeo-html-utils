@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  * Contributors:
- *     thibaud
+ *     Thibaud Arguillere
  */
 package org.nuxeo.html.utils;
 
@@ -29,15 +29,19 @@ import org.nuxeo.ecm.core.api.blobholder.BlobHolder;
 import org.nuxeo.ecm.core.api.blobholder.BlobHolderAdapterService;
 import org.nuxeo.runtime.api.Framework;
 
+import net.htmlparser.jericho.CharacterReference;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Renderer;
 import net.htmlparser.jericho.Source;
+import net.htmlparser.jericho.StartTag;
 
 /**
  * Wrapper around Jericho HTML Parser.
  * <p>
- * This class extracts links and plain text from an html source, Blob, String or Document
+ * This class extracts links, plain text, etc. from an html source, Blob, String or Document
+ * <p>
+ * Thanks to http://jericho.htmlparser.net and their example code.
  * 
  * @since 8.1
  */
@@ -195,5 +199,57 @@ public class HTMLParser {
 
         return renderer.toString();
 
+    }
+
+    /**
+     * Return the title of the document. If there is no title, returns ""
+     * 
+     * @return the title of the document, or ""
+     * @since 8.1
+     */
+    public String getTitle() {
+
+        String title = null;
+
+        source.fullSequentialParse();
+        Element titleElement = source.getFirstElement(HTMLElementName.TITLE);
+        if (titleElement != null) {
+
+            // TITLE element never contains other tags so just decode it collapsing whitespace:
+            title = CharacterReference.decodeCollapseWhiteSpace(titleElement.getContent());
+        }
+
+        return title == null ? "" : title;
+    }
+
+    /**
+     * Extract the value of the key, return it. Returns "" if not found.
+     * <p>
+     * For example, to get the keywords, call <code>getMetaValue("keywords")</code>. For the description:
+     * <code>getMetaValue("description")</code>.
+     * 
+     * @param key
+     * @return the value of the meta. "" if not found
+     * @since 8.1
+     */
+    public String getMetaValue(String key) {
+
+        String value = null;
+
+        source.fullSequentialParse();
+        int max = source.length();
+        for (int pos = 0; pos < max;) {
+            StartTag startTag = source.getNextStartTag(pos, "name", key, false);
+            if (startTag == null) {
+                return "";
+            }
+            if (startTag.getName() == HTMLElementName.META) {
+                value = startTag.getAttributeValue("content"); // Attribute values are automatically decoded
+                break;
+            }
+            pos = startTag.getEnd();
+        }
+
+        return value == null ? "" : value;
     }
 }
