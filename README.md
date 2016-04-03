@@ -32,16 +32,28 @@ function run(input, params) {
 }
 ```
 
-* **`HTML: Get PLain Text`** (id `HTML.GetPLainText`)
-  * Accepts a `Blob`, returns a `String`
+* **`HTML: Get Plain Text`** (id `HTML.GetPlainText`)
+  * Accepts `Blob`, `Document` or `String`, returns a `String`
   * Parses the html and returns the plain text content.
   * Parameters:
     * `includeHyperlinkURLs`: Boolean, optionnal. Default value is `false`.
     * `includeAlternateText`: Boolean, optionnal. Default value is `false`.
     * `convertNonBreakingSpaces`: Boolean, optionnal. Default value is `false`.
     * `lineSeparator`: String, optionnal. Default value is `LF` (char #10, `"\n"`)
-    * `xpath`: Thge xpath to use when the input is `Document`. Default value is `file:contet`
+    * `xpath`: The xpath to use when the input is `Document`. Default value is `file:content`
       * Notice: If the input is `Document` and `xpath` is left empty or there is no blob, the plug-in will check if the document has the `note` schema. If yes, it uses its `note:note` field for parsing
+
+* **`HTML: Get Info`** (id `HTML.GetInfo`)
+  * Accepts `Blob`, `Document` or `String`, returns a `String`
+  * Parses the html and returns a JSON string containing an object with the following properties:
+    * `title`: The content of the `<title>...</title>` tag. Returns `""` if there is no such tag
+    * One property per meta name in the `metaList` parameter
+  * When called using JavaScript Automation, one can easily use `JSON.parse` on the resulting stirng to quickly extract the values.
+  * Parameters:
+    * `metaList`: String, optionnal. A list (comma-separated) of the _names_ of the `<meta>` tags for wich you want to get the content. The plug-in will trim any exta space at the beginning.end of tags.
+    * `xpath`: The xpath to use when the input is `Document`. Default value is `file:content`
+      * Notice: If the input is `Document` and `xpath` is left empty or there is no blob, the plug-in will check if the document has the `note` schema. If yes, it uses its `note:note` field for parsing
+      
 
 
 ## Build

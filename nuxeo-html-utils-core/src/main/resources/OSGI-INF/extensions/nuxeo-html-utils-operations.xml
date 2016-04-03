@@ -4,6 +4,7 @@
     point="operations" >
       <operation class="org.nuxeo.html.utils.operations.HTMLGetLinksOp" />
       <operation class="org.nuxeo.html.utils.operations.HTMLGetPlainTextOp" />
+      <operation class="org.nuxeo.html.utils.operations.HTMLGetInfoOp" />
    </extension>
     
 </component>

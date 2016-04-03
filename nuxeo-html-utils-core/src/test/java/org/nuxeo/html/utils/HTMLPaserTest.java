@@ -39,6 +39,7 @@ import org.nuxeo.ecm.automation.test.AutomationFeature;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
 import org.nuxeo.ecm.core.api.impl.blob.FileBlob;
+import org.nuxeo.html.utils.operations.HTMLGetInfoOp;
 import org.nuxeo.html.utils.operations.HTMLGetLinksOp;
 import org.nuxeo.html.utils.operations.HTMLGetPlainTextOp;
 import org.nuxeo.runtime.test.runner.Deploy;
@@ -358,5 +359,37 @@ public class HTMLPaserTest {
         result = (String) automationService.run(ctx, chain);
         assertNotNull(result);
         testPlainText(result, true);
+    }
+    
+    @Test
+    public void testGetInfo_Operation() throws Exception {
+        OperationChain chain;
+        OperationContext ctx = new OperationContext(session);
+
+        ctx.setInput(HTML_FILEBLOB);
+        chain = new OperationChain("testGetInfoOp");
+        chain.add(HTMLGetInfoOp.ID).set("metaList", "description, keywords, author");
+        String result = (String) automationService.run(ctx, chain);
+        assertNotNull(result);
+        
+        JSONObject obj = new JSONObject(result);
+
+        assertTrue(obj.has("title"));
+        String str = obj.getString("title");
+        assertNotNull(str);
+        assertEquals("Nuxeo HTMLParser Rocks!", str);
+
+        assertTrue(obj.has("description"));
+        str = obj.getString("description");
+        assertEquals("The description", str);
+        
+        assertTrue(obj.has("keywords"));
+        str = obj.getString("keywords");
+        assertEquals("kw1,kw2,kw3", str);
+
+        assertTrue(obj.has("author"));
+        str = obj.getString("author");
+        assertEquals("John Smith", str);
+        
     }
 }
