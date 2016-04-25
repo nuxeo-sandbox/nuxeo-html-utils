@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.nuxeo.ecm.distribution</groupId>
     <artifactId>nuxeo-distribution</artifactId>
-    <version>8.1</version>
+    <version>8.2</version>
   </parent>
 
   <groupId>org.nuxeo.html.utils</groupId>
@@ -18,10 +18,6 @@
     <module>nuxeo-html-utils-core</module>
     <module>nuxeo-html-utils-marketplace</module>
   </modules>
-
-
-
-
   <repositories>
     <repository>
       <id>public</id>
