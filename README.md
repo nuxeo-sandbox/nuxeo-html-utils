@@ -4,6 +4,11 @@ This plug-in contains utilities to parse an HTML blob.
 
 Internally, it uses the _Jericho HTML Parser_ library (no need to install anything in your server, this library is already used by Nuxeo)
 
+### Quality Assurance
+QA build status: ![Build Status](https://qa.nuxeo.org/jenkins/buildStatus/icon?job=Sandbox/sandbox_nuxeo-html-utils-master)
+
+[QA Last Build Page](http://qa.nuxeo.org/jenkins/job/Sandbox/job/sandbox_nuxeo-html-utils-master/lastBuild/org.nuxeo.html.utils$nuxeo-html-utils-mp/) of the Nuxeo Package, to get the .zip package and install it on your server (no need to build it).
+
 ## Operations
 
 * **`HTML: Get Links`** (id `HTML.GetLinks`)
