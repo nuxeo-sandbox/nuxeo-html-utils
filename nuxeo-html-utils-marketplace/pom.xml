@@ -29,6 +29,7 @@
     <dependency>
       <groupId>org.nuxeo.html.utils</groupId>
       <artifactId>nuxeo-html-utils-core</artifactId>
+      <version>8.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
