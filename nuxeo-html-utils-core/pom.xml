@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.nuxeo.html.utils</groupId>
     <artifactId>nuxeo-html-utils-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>8.3-SNAPSHOT</version>
   </parent>
   <artifactId>nuxeo-html-utils-core</artifactId>
   <name>Nuxeo html utils core</name>
