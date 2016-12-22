@@ -4,20 +4,25 @@
   <parent>
     <groupId>org.nuxeo.ecm.distribution</groupId>
     <artifactId>nuxeo-distribution</artifactId>
-    <version>8.3</version>
+    <version>8.10</version>
   </parent>
 
   <groupId>org.nuxeo.html.utils</groupId>
   <artifactId>nuxeo-html-utils-parent</artifactId>
-  <version>8.3-SNAPSHOT</version>
+  <version>8.10-SNAPSHOT</version>
   <name>Nuxeo html utils parent</name>
   <description/>
   <packaging>pom</packaging>
+
+  <properties>
+    <nuxeo.distribution.version>8.10</nuxeo.distribution.version>
+  </properties>
 
   <modules>
     <module>nuxeo-html-utils-core</module>
     <module>nuxeo-html-utils-marketplace</module>
   </modules>
+
   <repositories>
     <repository>
       <id>public</id>
