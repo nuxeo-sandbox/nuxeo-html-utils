@@ -4,18 +4,19 @@
   <parent>
     <groupId>org.nuxeo.ecm.distribution</groupId>
     <artifactId>nuxeo-distribution</artifactId>
-    <version>9.10</version>
+    <version>10.3</version>
   </parent>
 
   <groupId>org.nuxeo.html.utils</groupId>
   <artifactId>nuxeo-html-utils-parent</artifactId>
-  <version>9.10-SNAPSHOT</version>
+  <version>10.3-SNAPSHOT</version>
   <name>Nuxeo html utils parent</name>
   <description/>
   <packaging>pom</packaging>
 
   <properties>
-    <nuxeo.distribution.version>8.10</nuxeo.distribution.version>
+    <nuxeo.distribution.version>10.3</nuxeo.distribution.version>
+    <nuxeo.htmlutils.version>10.3-SNAPSHOT</nuxeo.htmlutils.version>
   </properties>
 
   <modules>
@@ -76,12 +77,12 @@
       <dependency>
         <groupId>org.nuxeo.html.utils</groupId>
         <artifactId>nuxeo-html-utils-core</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${nuxeo.htmlutils.version.version}</version>
       </dependency>
       <dependency>
         <groupId>org.nuxeo.html.utils</groupId>
         <artifactId>nuxeo-html-utils-mp</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${nuxeo.htmlutils.version.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

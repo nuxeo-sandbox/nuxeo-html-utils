@@ -20,7 +20,7 @@ package org.nuxeo.html.utils.operations;
 
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nuxeo.ecm.automation.core.Constants;
