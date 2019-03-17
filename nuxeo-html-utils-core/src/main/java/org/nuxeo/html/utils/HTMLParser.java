@@ -81,7 +81,7 @@ public class HTMLParser {
 
         if (StringUtils.isBlank(inXPath)) {
             if (inDoc.hasSchema("note")) {
-                BlobHolderAdapterService bhas = Framework.getLocalService(BlobHolderAdapterService.class);
+                BlobHolderAdapterService bhas = Framework.getService(BlobHolderAdapterService.class);
                 BlobHolder bh = bhas.getBlobHolderAdapter(inDoc);
                 blob = bh.getBlob();
             } else {
