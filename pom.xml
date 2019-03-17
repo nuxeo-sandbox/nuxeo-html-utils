@@ -4,25 +4,40 @@
   <parent>
     <groupId>org.nuxeo.ecm.distribution</groupId>
     <artifactId>nuxeo-distribution</artifactId>
-    <version>10.3</version>
+    <version>10.10</version>
   </parent>
 
   <groupId>org.nuxeo.html.utils</groupId>
   <artifactId>nuxeo-html-utils-parent</artifactId>
-  <version>10.3-SNAPSHOT</version>
+  <version>10.10-SNAPSHOT</version>
   <name>Nuxeo html utils parent</name>
   <description/>
   <packaging>pom</packaging>
 
   <properties>
-    <nuxeo.distribution.version>10.3</nuxeo.distribution.version>
-    <nuxeo.htmlutils.version>10.3-SNAPSHOT</nuxeo.htmlutils.version>
+    <nuxeo.distribution.version>10.10</nuxeo.distribution.version>
+    <nuxeo.htmlutils.version>10.10-SNAPSHOT</nuxeo.htmlutils.version>
   </properties>
 
   <modules>
     <module>nuxeo-html-utils-core</module>
     <module>nuxeo-html-utils-marketplace</module>
   </modules>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.nuxeo.html.utils</groupId>
+        <artifactId>nuxeo-html-utils-core</artifactId>
+        <version>${nuxeo.htmlutils.version.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.html.utils</groupId>
+        <artifactId>nuxeo-html-utils-mp</artifactId>
+        <version>${nuxeo.htmlutils.version.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <repositories>
     <repository>
@@ -72,18 +87,4 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.nuxeo.html.utils</groupId>
-        <artifactId>nuxeo-html-utils-core</artifactId>
-        <version>${nuxeo.htmlutils.version.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.nuxeo.html.utils</groupId>
-        <artifactId>nuxeo-html-utils-mp</artifactId>
-        <version>${nuxeo.htmlutils.version.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 </project>
