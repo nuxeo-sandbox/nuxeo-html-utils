@@ -1,12 +1,17 @@
-<project name="nuxeo-html-utils" default="build" xmlns:nx="urn:nuxeo-build" xmlns:artifact="urn:nuxeo-artifact">
+<project name="nuxeo-html-utils"
+         default="build"
+         xmlns:nx="urn:nuxeo-build"
+         xmlns:artifact="urn:nuxeo-artifact">
   <taskdef resource="org/nuxeo/build/antlib.xml" uri="urn:nuxeo-build" />
-  <taskdef resource="org/nuxeo/build/artifact/antlib.xml" uri="urn:nuxeo-artifact" />
+  <taskdef resource="org/nuxeo/build/artifact/antlib.xml"
+           uri="urn:nuxeo-artifact" />
   <taskdef resource="net/sf/antcontrib/antlib.xml" />
 
   <target name="build" description="Build ${maven.project.name}">
     <property name="outdir" value="${maven.project.build.directory}" />
     <!-- Include your artifacts in the graph adding your groupId to groupPrefixes -->
-    <artifact:nuxeo-expand includeTestScope="true" groupPrefixes="org.nuxeo,org.nuxeo.html.utils" />
+    <artifact:nuxeo-expand includeTestScope="true"
+                        groupPrefixes="org.nuxeo,org.nuxeo.html.utils" />
     <!-- Prints the graph for debugging purpose -->
     <artifact:print output="${outdir}/dependency-tree.log" />
     <tstamp />
@@ -62,7 +67,7 @@
           <artifact type="pom" />
           <artifact groupId="nuxeo-studio" />
           <!-- Filter out your artifacts using their groupId for instance -->
-          <artifact groupId="org.nuxeo.html.utils*"/>
+          <artifact groupId="org.nuxeo.html.utils*" />
         </excludes>
       </artifact:set>
     </copy>
@@ -77,7 +82,7 @@
       includesfile="${outdir}/includes"
       excludesfile="${outdir}/excludesfile"
       patternsetid="nxr.versus.distribution"
-      ignoreContent="false"
+      ignoreContent="true"
       ignoreContentPattern=".*\.jar$"></nx:zipdiff>
     <unzip src="${outdir}/nxr-${maven.project.version}.zip" dest="${outdir}/marketplace/install">
       <patternset refid="nxr.versus.distribution" />
