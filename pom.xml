@@ -5,32 +5,31 @@
     <artifactId>nuxeo-parent</artifactId>
     <version>2025.0.102</version>
   </parent>
-
   <groupId>org.nuxeo.html.utils</groupId>
   <artifactId>nuxeo-html-utils-parent</artifactId>
   <version>2025.0.0-SNAPSHOT</version>
   <name>Nuxeo html utils parent</name>
   <description/>
   <packaging>pom</packaging>
-
   <properties>
     <nuxeo.skip.enforcer>true</nuxeo.skip.enforcer>
     <nuxeo.target.version>2025.*</nuxeo.target.version>
   </properties>
-
   <modules>
     <module>nuxeo-html-utils-core</module>
     <module>nuxeo-html-utils-marketplace</module>
   </modules>
-
-  <scm/>
+  <scm>
+    <connection>scm:git:${project.scm.url}</connection>
+    <developerConnection>scm:git:${project.scm.url}</developerConnection>
+    <url>https://github.com/nuxeo-sandbox/nuxeo-html-utils</url>
+  </scm>
   <licenses/>
   <mailingLists/>
   <issueManagement/>
   <ciManagement/>
   <developers/>
   <distributionManagement/>
-  
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -45,7 +44,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <repositories>
     <repository>
       <id>maven-public</id>
@@ -70,7 +68,6 @@
       </snapshots>
     </repository>
   </repositories>
-
   <pluginRepositories>
     <pluginRepository>
       <id>maven-public</id>
@@ -83,4 +80,21 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.1.1</version>
+        <configuration>
+          <projectVersionPolicyId>SemVerVersionPolicy</projectVersionPolicyId>
+          <tagNameFormat>@{project.version}</tagNameFormat>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <scmReleaseCommitComment>Release @{releaseLabel}</scmReleaseCommitComment>
+          <scmDevelopmentCommitComment>Post Release @{releaseLabel}</scmDevelopmentCommitComment>
+          <pushChanges>false</pushChanges>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
